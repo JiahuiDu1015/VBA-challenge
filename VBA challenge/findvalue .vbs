@@ -11,7 +11,7 @@ Sub FindValue()
     Dim currentNamedecrease As String
     Dim currentNamegreastvalue As String
     
-    
+    lastRow = ws.Cells(ws.Rows.Count, "K").End(xlUp).Row
     lastRow = ws.Cells(ws.Rows.Count, "M").End(xlUp).Row
     lastRow = ws.Cells(ws.Rows.Count, "N").End(xlUp).Row
    
@@ -24,25 +24,25 @@ Sub FindValue()
     
 
     
-    For i = 2 To lastRow 
+    For i = 2 To lastRow
         currentNameincrease = ws.Cells(i, 18).Value
         currentNamedecrease = ws.Cells(i, 18).Value
         currentNamedecrease = ws.Cells(i, 18).Value
-        greastestincrease = ws.Cells(i, 19).Value
+        greastestIncrease = ws.Cells(i, 19).Value
         greastestdecrease = ws.Cells(i, 19).Value
-        greatesttotalvalue = ws.Cells(i, 19).Value
+        greatesttotalValue = ws.Cells(i, 19).Value
         
        
         
         If currentNameincrease > greatestValue Then
-            greatestValue = greastestincrease
+            greatestValue = greastestIncrease
             greatestName = currentNameincrease
             
         ElseIf currentNamedecrease < greatestValue Then
             greatestValue = greastestdecrease
             greatestName = currentNamedecrease
             
-        Else 
+        Else
         
         End If
         
