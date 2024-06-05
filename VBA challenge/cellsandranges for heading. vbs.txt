@@ -1,0 +1,16 @@
+Sub CellsAndRanges():
+    
+
+    Range("K1").Value = "Ticker"
+    Range("L1").Value = "Quarterly Change"
+    Range("M1").Value = "Percent Change"
+    Range("N1").Value = "Total Volume"
+    Range("R1").Value = "Ticker"
+    Range("S1").Value = "Value"
+    
+    Range("Q2").Value = "Greatest % increase"
+    Range("Q3").Value = "Greatest % decrease"
+    Range("Q4").Value = "Greatest total volume"
+ 
+    
+End Sub

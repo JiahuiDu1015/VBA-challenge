@@ -1,0 +1,56 @@
+
+Combined_Data
+
+
+Sub Ticker()
+
+  Dim ws As Worksheet
+
+  For Each ws In Worksheets
+  
+  Dim Ticker As String
+
+  
+  Dim Stockvolume_Total As Double
+  Stockvolume_Total = 0
+
+  Dim Summary_Table_Row As Integer
+  Summary_Table_Row = 2
+
+  lastrow = Cells(Rows.Count, 1).End(xlUp).Row
+  
+  For i = 2 To lastrow
+
+    
+    If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
+
+      
+      Ticker = Cells(i, 1).Value
+
+      
+      Stockvolume_Total = Stockvolume_Total + Cells(i, 7).Value
+
+      
+      Range("K" & Summary_Table_Row).Value = Ticker
+
+      
+      Range("N" & Summary_Table_Row).Value = Stockvolume_Total
+
+      
+      Summary_Table_Row = Summary_Table_Row + 1
+      
+      
+      Stockvolume_Total = 0
+
+
+    Else
+
+      
+      Stockvolume_Total = Stockvolume_Total + Cells(i, 7).Value
+
+    End If
+    
+
+  Next i
+  
+  Next ws
