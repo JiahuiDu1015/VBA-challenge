@@ -1,0 +1,110 @@
+
+Sub Ticker()
+    Dim Ticker As String
+    Dim StockVolume_Total As Double
+    Dim QuarterChange As Double
+    Dim PercentChange As Double
+    Dim Opening As Double
+    Dim Closing As Double
+    Dim lastRow As Long
+    Dim Summary_Table_Row As Integer
+    Dim rangeToFormat As Range
+
+    StockVolume_Total = 0
+    QuarterChange = 0
+    PercentChange = 0
+    Summary_Table_Row = 2
+    
+    ' Variables to track greatest increases, decreases, and volumes
+    Dim GreatestIncrease As Double
+    Dim GreatestIncreaseTicker As String
+    Dim GreatestDecrease As Double
+    Dim GreatestDecreaseTicker As String
+    Dim GreatestVolume As Double
+    Dim GreatestVolumeTicker As String
+
+    GreatestIncrease = 0
+    GreatestDecrease = 0
+    GreatestVolume = 0
+
+    lastRow = Cells(Rows.Count, 1).End(xlUp).Row
+
+    For i = 2 To lastRow
+        ' Check if we are at the first row of a new ticker
+        If Cells(i - 1, 1).Value <> Cells(i, 1).Value Then
+            ' Record the opening price
+            Opening = Cells(i, 3).Value
+        End If
+
+        ' Add to the total stock volume
+        StockVolume_Total = StockVolume_Total + Cells(i, 7).Value
+
+        ' Check if we are at the end of a ticker's data
+        If Cells(i + 1, 1).Value <> Cells(i, 1).Value Or i = lastRow Then
+            Ticker = Cells(i, 1).Value
+            ' Record the closing price
+            Closing = Cells(i, 6).Value
+
+            ' Calculate the quarterly change and percent change
+            QuarterChange = Closing - Opening
+            If Opening <> 0 Then
+                PercentChange = (QuarterChange / Opening)
+            Else
+                PercentChange = 0
+            End If
+
+            ' Output results
+            Range("K" & Summary_Table_Row).Value = Ticker
+            Range("L" & Summary_Table_Row).Value = QuarterChange
+            Range("M" & Summary_Table_Row).Value = PercentChange
+            Range("M" & Summary_Table_Row).NumberFormat = "0.00%" ' Format as percentage
+            Range("N" & Summary_Table_Row).Value = StockVolume_Total
+
+            ' Move to the next row in the summary table
+            Summary_Table_Row = Summary_Table_Row + 1
+
+            ' Reset for next ticker
+            StockVolume_Total = 0
+        End If
+    
+        ' Update greatest increase, decrease, and volume
+        If PercentChange > GreatestIncrease Then
+                GreatestIncrease = PercentChange
+                GreatestIncreaseTicker = Ticker
+        End If
+            
+        If PercentChange < GreatestDecrease Then
+                GreatestDecrease = PercentChange
+                GreatestDecreaseTicker = Ticker
+        End If
+
+        If StockVolume_Total > GreatestVolume Then
+                GreatestVolume = StockVolume_Total
+                GreatestVolumeTicker = Ticker
+        End If
+        
+    Next i
+    
+    ' Output greatest increase, decrease, and volume
+    Range("P2").Value = "Greatest % Increase"
+    Range("Q2").Value = GreatestIncreaseTicker
+    Range("R2").Value = GreatestIncrease
+    Range("R2").NumberFormat = "0.00%" ' Format as percentage
+
+    Range("P3").Value = "Greatest % Decrease"
+    Range("Q3").Value = GreatestDecreaseTicker
+    Range("R3").Value = GreatestDecrease
+    Range("R3").NumberFormat = "0.00%" ' Format as percentage
+
+    Range("P4").Value = "Greatest Total Volume"
+    Range("Q4").Value = GreatestVolumeTicker
+    Range("R4").Value = GreatestVolume
+    
+    Range("K1").Value = "Ticker"
+    Range("L1").Value = "Quarterly Change"
+    Range("M1").Value = "Percent Change"
+    Range("N1").Value = "Total Volume"
+    Range("Q1").Value = "Ticker"
+    Range("R1").Value = "Value"
+
+End Sub

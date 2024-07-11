@@ -1,0 +1,37 @@
+Sub ApplyConditionalFormatting()
+    Dim ws As Worksheet
+    Dim lastRow As Long
+    Dim rangeToFormat As Range
+
+    ' Set the worksheet you want to apply conditional formatting to
+    Set ws = ThisWorkbook.Sheets("Sheet1") ' Adjust the sheet name as needed
+
+    ' Determine the last row of data in column L (assuming column L contains the percent changes)
+    lastRow = ws.Cells(ws.Rows.Count, 12).End(xlUp).Row
+
+    ' Define the range to apply conditional formatting to
+    Set rangeToFormat = ws.Range("L2:L" & lastRow)
+    
+    ' Check if range is valid
+    If rangeToFormat Is Nothing Then
+        MsgBox "No data found in column L"
+        Exit Sub
+    End If
+
+    ' Clear any existing conditional formatting
+    rangeToFormat.FormatConditions.Delete
+
+    ' Apply conditional formatting for numbers greater than 0 (green)
+    With rangeToFormat.FormatConditions.Add(Type:=xlCellValue, Operator:=xlGreater, Formula1:="0")
+        .Interior.Color = RGB(0, 255, 0) ' Green
+        .Font.Color = RGB(0, 0, 0) ' Optional: set font color to black
+    End With
+
+    ' Apply conditional formatting for numbers less than 0 (red)
+    With rangeToFormat.FormatConditions.Add(Type:=xlCellValue, Operator:=xlLess, Formula1:="0")
+        .Interior.Color = RGB(255, 0, 0) ' Red
+        .Font.Color = RGB(0, 0, 0) ' Optional: set font color to black
+    End With
+
+    MsgBox "Conditional formatting applied successfully!"
+End Sub
